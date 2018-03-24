@@ -1,0 +1,65 @@
+<div class="datepicker">
+    <div (click)="showCalendar()" class="datepicker__input-container">
+        <ng-content></ng-content>
+    </div>
+    <div class="datepicker__calendar datepicker__calendar_animate_slide-in" *ngIf="calendarVisible">
+        <div class="header">
+            <i class="fa fa-backward previousYear" (click)="previousYear()"></i>
+            <i class="fa fa-chevron-left previousMonth" (click)="previousMonth()"></i>
+            <span (click)="toggleYear()">{{ title }}</span>
+            <i class="fa fa-chevron-right nextMonth" (click)="nextMonth()"></i>
+            <i class="fa fa-forward nextYear" (click)="nextYear()"></i>
+        </div>
+        <div class="body">
+            <div class="month-grid" *ngIf="gridMode == 0">
+                <ol><li>日</li><li>一</li><li>二</li><li>三</li><li>四</li><li>五</li><li>六</li></ol>
+                <ul><li *ngFor="let item of day_list" [ngClass]="{disable: item.disable, active: item.val == currentDay && !item.disable}" (click)="changeDay(item)">{{ item.val | twoPad }}</li></ul>
+            </div>
+            <div class="year-grid" *ngIf="gridMode == 1">
+                <div class="list-group year">
+                    <div class="title">年</div>
+                    <ul>
+                        <li *ngFor="let item of year_list" [ngClass]="{active: item == currentYear}" (click)="changeYear(item)">{{ item }}</li>
+                    </ul>
+                </div>
+                <div class="list-group month">
+                <div class="title">月</div>
+                <ul>
+                    <li *ngFor="let item of month_list" [ngClass]="{active: item == currentMonth}" (click)="changeMonth(item)">{{ item | twoPad }}</li>
+                </ul>
+                </div>
+                <i class="fa fa-close" (click)="toggleYear()"></i>
+            </div>
+            <div class="day-grid" *ngIf="hasTime && gridMode == 2">
+                <div class="list-group hour">
+                <div class="title">小时</div>
+                <ul>
+                    <li *ngFor="let item of hour_list" [ngClass]="{active: item == currentHour}" (click)="changeHour(item)">{{ item | twoPad }}</li>
+                </ul>
+                </div>
+                <div class="list-group minute">
+                <div class="title">分钟</div>
+                <ul>
+                    <li *ngFor="let item of minute_list" [ngClass]="{active: item == currentMinute}" (click)="changeMinute(item)">{{ item | twoPad }}</li>
+                </ul>
+                </div>
+                <div class="list-group second">
+                <div class="title">秒钟</div>
+                <ul>
+                    <li *ngFor="let item of second_list" [ngClass]="{active: item == currentSecond}" (click)="changeSecond(item)">{{ item | twoPad }}</li>
+                </ul>
+                </div>
+                <i class="fa fa-close"></i>
+            </div>
+        </div>
+        <div class="footer" *ngIf="hasTime">
+            <div class="time-box" (click)="toggleTime()">
+                <span>{{ currentHour | twoPad }}</span>:
+                <span>{{ currentMinute | twoPad }}</span>:
+                <span>{{ currentSecond | twoPad }}</span>
+            </div>
+            <button type="button" (click)="enterChange()">确定</button>
+        </div>
+
+    </div>
+</div>

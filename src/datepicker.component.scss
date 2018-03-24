@@ -1,0 +1,247 @@
+$size: 50px;
+$boxWidth: $size * 7;
+
+$minSize: 45px;
+$minBoxWidth: $size * 7;
+
+@mixin prefix-animation($animation-name){
+    animation: $animation-name;
+    -webkit-animation: $animation-name;
+    -moz-animation: $animation-name;
+    -o-animation: $animation-name;
+}
+
+@mixin prefix-keyframes($animation-name){
+    @keyframes #{$animation-name}{
+        @content;
+    }
+    @-webkit-keyframes #{$animation-name}{
+        @content; 
+    }
+    @-moz-keyframes #{$animation-name}{
+        @content; 
+    }
+    @-o-keyframes #{$animation-name}{
+        @content; 
+    }
+} 
+
+@mixin prefix-content($content-name, $content-txt){
+    #{$content-name}: $content-txt;
+    -webkit-#{$content-name}: $content-txt;
+    -moz-#{$content-name}: $content-txt;
+    -ms-#{$content-name}: $content-txt;
+    -o-#{$content-name}: $content-txt;
+}
+
+
+@mixin scrollbar() {
+    &::-webkit-scrollbar{
+        height:6px;
+        width:6px;
+        margin-right:5px;
+        background: #f5f5f5;
+        transition:all 0.3s ease-in-out;
+        border-radius:0px
+    }
+    &::-webkit-scrollbar-track { 
+        -webkit-border-radius: 0px;
+        border-radius: 0px;
+    }
+    &::-webkit-scrollbar-thumb{
+        -webkit-border-radius: 0px;
+        border-radius: 0px;
+        background: rgba(0,0,0,0.5); 
+        &:hover{
+            background:rgba(0,0,0,0.6);
+        }
+        &:active{
+            background:rgba(0,0,0,0.8);
+        }
+        &:window-inactive {
+            background: rgba(0,0,0,0.4);
+        }
+    }
+}
+
+.datepicker {
+    position: relative;
+    .datepicker__calendar {
+        width: $boxWidth;
+        position: absolute;
+        z-index: 999;
+        user-select: none;
+        background: #fff;
+        color: #333;
+        @include prefix-content(user-select, none);
+        .header {
+            position: relative;
+            text-align: center;
+            line-height: $size;
+            background: #006cff;
+            color: #fff;
+            font-size: $size * .5;
+            span {
+                width: 60%;
+                display: inline-block;
+            }
+            .previousMonth,
+            .nextYear {
+                margin-left: $size * .2;
+            }
+        }
+        li {
+            list-style: none;
+            color: #333;
+        }
+        .body {
+            height: $boxWidth;
+            position: relative;
+            .month-grid, 
+            .year-grid, 
+            .day-grid {
+                background: #fff;
+                position: absolute;
+                top: 0;
+                width: 100%;
+                bottom: 0;
+                left: 0;
+            }
+            ol, ul {
+                padding: 0;
+                margin: 0;
+            }
+            .month-grid {
+                ol {
+                    background: #eee;
+                }
+                li {
+                    display: inline-block;
+                    width: $size;
+                    line-height: $size;
+                    text-align: center;
+                    box-sizing: border-box;
+                }
+                ul {
+                    li {
+                        cursor: pointer;
+                        &.active {
+                            background: #006cff;
+                            color: #fff;
+                        }
+                        &.disable {
+                            color: #ccc;
+                        }
+                    }
+                }
+            }
+            .list-group {
+                width: 80px;
+                display: inline-block;
+                .title {
+                    height: 30px;
+                }
+                ul {
+                    height: $boxWidth - 30px;
+                    li {
+                        line-height: 30px;
+                        &.active {
+                            background: #006cff;
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+            .day-grid {
+                .list-group {
+                    width: 60px;
+                    &:first-child {
+                        margin-left: ($boxWidth - 190px) / 2;
+                    }
+                }
+            }
+            .year-grid {
+                .list-group {
+                    &:first-child {
+                        margin-left: ($boxWidth - 160px) / 2;
+                    }
+                }
+            }
+            .year-grid,
+            .day-grid {
+                .fa-close {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                }
+            }
+        }
+        .footer {
+            background: #eee;
+            position: relative;
+            height: 30px;
+            .time-box {
+                display: inline-block;
+                line-height: 30px;
+                height: 30px;
+                position: absolute;
+                span {
+                    display: inline-block;
+                    width: 30px;
+                    text-align: center;
+                }
+            }
+            button {
+                position: absolute;
+                right: 0;
+                width: 100px;
+                background: green;
+                color: #fff;
+                height: 30px;    
+                line-height: 30px;
+                border: none;
+            }
+        }
+    }
+    .list-group {
+        .title,
+        ul {
+            width: 100%;
+            text-align: center;
+        }
+        ul {
+            overflow-y: auto;
+            border: 1px solid #eee;
+            @include scrollbar();
+        }
+    }
+}
+
+
+
+@media screen and (max-width: 400px) {
+    .datepicker {
+        .datepicker__calendar {
+            position: fixed;
+            width: 100%;
+            left: 0;
+            bottom: 0;
+            .body {
+                height: $minBoxWidth;
+                width: $minBoxWidth;
+                margin: 0 auto;
+                .month-grid {
+                    li {
+                        width: $minSize;
+                        line-height: $minSize;
+                    }
+                }
+                .list-group {
+                    ul {
+                        height: $minBoxWidth - 30px;
+                    }
+                }
+            }
+        }
+    }
+}
